@@ -10,17 +10,17 @@ BoxVisualization::BoxVisualization() {
   setDelay(0);
 
   waves = Waves();
-  waves.setPos(ofPoint(285,375));
-  
+  waves.setPos(ofPoint(165,255));
+
   tline1.w = w;
   tline1.duration = 40;
   tline1.setDelay(0);
-  
+
   tline2.y = h;
   tline2.w = w;
   tline2.duration = 40;
   tline2.setDelay(0);
-  
+
   texts.clear();
   int textDelay = -55;
   // Top Left
@@ -57,13 +57,13 @@ BoxVisualization::BoxVisualization() {
                           10, delay+textDelay-15,
                           COLOR_55,
                           false));
-  
+
   // Animation settings
   events.clear();
   newEvent(0, 300, 0, 1); // intro
   newEvent(0, -1, 1, 1); // main
   currentEvent = events[0];
-  
+
   updateDependencyEvents();
   updateDependencyDelays(getDelay());
 }
@@ -73,16 +73,16 @@ void BoxVisualization::draw() {
   ofPushMatrix();
   {
     ofTranslate(x, y);
-    
+
     // Intro
     tline1.draw();
     tline2.draw();
-    
+
     if (currentEvent.id == 0 && getTime() > 0)
       waves.camDist = easeOut(getTime(), 20000, 2400, 50);
     if (getTime() > 0)
       waves.draw();
-    
+
     for (int i = 0; i < texts.size(); i++)
       texts[i].draw();
 }
@@ -98,7 +98,7 @@ void BoxVisualization::updateDependencyDelays(int delay_) {
   delay = delay_;
   tline1.setDelay(delay);
   tline2.setDelay(delay-5);
-  
+
   int textDelay = -55;
   int textDelays[6] = {0,-5,-10,-10,-15,-15};
   for (int i = 0; i < texts.size(); i++)

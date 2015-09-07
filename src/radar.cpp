@@ -6,23 +6,23 @@ Radar::Radar() {
   point_count = 8;
   thetaRate = 1/150.0;
   axis_length = 220;
-  
+
   x = 100;
   y = 0;
   w = 400;
   h = 400;
   alphaSub = 0;
-  
+
   absolute_center = ofPoint(300,200);
-  
+
   time = 0;
   minTheta = 0;
   maxTheta = 2;
   change_index = 3;
-  
+
   thetaStep = 6.28/point_count;
   index_update_rate = thetaStep / thetaRate;
-  
+
   radialSplineShader.setGeometryInputType(GL_LINES);
 	radialSplineShader.setGeometryOutputType(GL_TRIANGLE_STRIP);
 	radialSplineShader.setGeometryOutputCount(4);
@@ -32,7 +32,7 @@ Radar::Radar() {
 	axisShader.setGeometryOutputCount(4);
   axisShader.load("shadersGL3/lines.vert", "shadersGL3/null.frag", "shadersGL3/lines.geom");
 //  axisShader.load("shadersGL3/null.vert", "shadersGL3/radialFade.frag");
-  
+
   axisMesh = ofMesh();
   axisMesh.setMode(OF_PRIMITIVE_LINES);
   for (int i = 0; i < axis_length; i += 10) {
@@ -40,11 +40,11 @@ Radar::Radar() {
   }
 
   init_aframe();
-  
+
   cam = ofEasyCam();
   cam.setTarget(ofVec3f(0,0,0));
   cam.setDistance(600);
-  
+
   if (!debug)
     cam.disableMouseInput();
 }
@@ -53,15 +53,15 @@ void Radar::update() {
 //  if ((int) time % 10 == 0) {
 //    update_aframe();
 //  }
-  
+
   // Update change, reset once maxTheta loops completely
   if ((int) time % (int)index_update_rate == 0) {
     change_index = (change_index+1)%polar_aframe_points.size();
     update_aframe();
   }
-  
+
   time += 1;
-  
+
   minTheta += thetaRate;
   maxTheta += thetaRate;
   if (minTheta > 2*PI)
@@ -74,7 +74,7 @@ void Radar::update() {
 
 void Radar::draw() {
   update();
-  
+
 //  ofNoFill();
 //  ofSetColor(255);
 //  ofRect(x,y,w,h);
@@ -83,14 +83,14 @@ void Radar::draw() {
 //  ofRect(0,0,w,h);
   ofNoFill();
   ofSetColor(0,255,0);
-  
+
   radialSplineShader.begin();
   radialSplineShader.setUniform1f("thickness", 3.5);
   radialSplineShader.setUniform1f("minTheta", minTheta);
   radialSplineShader.setUniform1f("maxTheta", maxTheta);
   radialSplineShader.setUniform2f("center", absolute_center.x, ofGetHeight()-absolute_center.y);
   radialSplineShader.setUniform1f("alphaSub", alphaSub);
-  
+
   float descale = 0.1;
   for (int i = 0; i < 9; i++) {
     ofPushMatrix();
@@ -101,7 +101,7 @@ void Radar::draw() {
     ofPopMatrix();
   }
   radialSplineShader.end();
-  
+
   // Rotating period
 //  axisShader.begin();
 //  axisShader.setUniform1f("thickness", 1.0);
@@ -114,7 +114,7 @@ void Radar::draw() {
     ofSetColor(255,150);
     debug_draw_bezier_segments();
     debug_draw_aframe();
-    
+
     // Axes
     ofSetColor(255,0,0);
     ofLine(0, 0, 0, 20, 0, 0);
@@ -143,15 +143,15 @@ void Radar::compute_bezier_from_aframe() {
     ofPoint c1 = intermediate_point(a1, a2, 1/3.0);
     ofPoint c2 = intermediate_point(a1, a2, 2/3.0);
     ofPoint end = get_next_vertex(i);
-    
+
     bezier b = bezier();
     b.start = start;
     b.c1 = c1;
     b.c2 = c2;
     b.end = end;
-    
+
     bezier_segments.push_back(b);
-    
+
     start = end;
   }
 }
@@ -161,9 +161,9 @@ void Radar::compute_lines_from_bezier() {
   // Place line segments in bezierLineMesh
   bezierLineMesh = ofMesh();
   bezierLineMesh.setMode(OF_PRIMITIVE_LINE_STRIP);
-  
+
   float t_step = 1/subdivisions;
-  
+
   for (int i = 0; i < bezier_segments.size(); i++) {
     bezier b = bezier_segments[i];
     vector<ofPoint> points = bezier_to_points(b);
@@ -214,10 +214,10 @@ void Radar::update_aframe() {
   pp.phi += phi_change;
   pp.phi = clamp(pp.phi, PI/3, PI);
   polar_aframe_points.at(change_index) = pp;
-  
+
   ofPoint p = polar_to_cartesian(pp.r, pp.theta, pp.phi);
   aframe_points.at(change_index) = p;
-  
+
   compute_bezier_from_aframe();
   compute_lines_from_bezier();
 }
@@ -273,7 +273,7 @@ ofPoint rec_de_casteljau(vector<ofPoint> points, float t) {
   //
   if (points.size() == 1)
     return points[0];
-  
+
   vector<ofPoint> intermediates;
   for (int i = 0; i < points.size()-1; i++) {
     ofPoint p1 = points[i];
@@ -281,7 +281,7 @@ ofPoint rec_de_casteljau(vector<ofPoint> points, float t) {
     ofPoint p = intermediate_point(p1, p2, t);
     intermediates.push_back(p);
   }
-  
+
   return rec_de_casteljau(intermediates, t);
 }
 

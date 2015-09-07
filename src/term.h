@@ -1,9 +1,9 @@
 /*
- 
+
  term.h
- 
+
  Draws the center terminal frame with the header
- 
+
  */
 
 #pragma once
@@ -13,23 +13,24 @@
 #include "animated.h"
 
 class Term : public Animated {
-  
+
 public:
   Term();
   void update();
   void draw();
-  
+
   float x;
   float y;
   float w;
   float h;
-  
+
   float inset;
-  
+
   float t;
-  
+
   void setPos(float x_, float y_);
-  
+  void setSize(float w_, float h_);
+
   void updateDependencyEvents();
   void updateDependencyDelays(int delay_);
 private:

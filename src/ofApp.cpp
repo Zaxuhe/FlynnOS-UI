@@ -7,21 +7,30 @@ void ofApp::setup() {
 
   ofSetFrameRate(60);
 
+  std::cout << ofGetScreenWidth() << " " << ofGetWidth() << std::endl;
+  std::cout << ofGetScreenHeight() << " " << ofGetHeight() << std::endl;
+
+  unsigned int wm_width = ofGetScreenWidth();
+  unsigned int wm_height = ofGetScreenHeight();
+
   layout = Layout();
-  
+
   // Position components, set delays for animation
   left = Left();
-  left.setPos(165,165);
+  left.setPos(40,40); //TODO: USE OFFSETS
   left.setDelay(-50);
 
   right = Right();
-  right.setPos(101*GRID_SIZE,165);
+  right.setPos(wm_width - 280,40);
+  right.setPosSubviews(wm_width - 280,40);
+
   right.setDelay(-50);
 
   term = Term();
-  term.setPos(29*GRID_SIZE, 11*GRID_SIZE);
+  term.setPos(310, 40); //x = 240 + 40 + 30
+  term.setSize(wm_width-620,wm_height-310);
 
-  keyboard.setPos(39*GRID_SIZE, 53*GRID_SIZE);
+  keyboard.setPos(wm_width/2-390, wm_height-230);
   keyboard.setDelay(-100);
 
   // Other
@@ -56,7 +65,7 @@ void ofApp::draw() {
     // with ofEasyCamera to deal with perspective differences
     ofTranslate(X_OFFSET, Y_OFFSET);
 
-    layout.drawBG();
+    //layout.drawBG();
     layout.drawGrid(30);
 
     // Draw and update components
@@ -79,7 +88,7 @@ void ofApp::keyPressed(int key) {
     isRecording = !isRecording;
     cout << "recording: " << isRecording << endl;
   }
-  
+
   if (key == '=')
     isDrawing = !isDrawing;
 }
@@ -87,7 +96,9 @@ void ofApp::keyPressed(int key) {
 void ofApp::keyReleased(int key) { }
 void ofApp::mouseMoved(int x, int y ) { }
 void ofApp::mouseDragged(int x, int y, int button) { }
-void ofApp::mousePressed(int x, int y, int button) { }
+void ofApp::mousePressed(int x, int y, int button) {
+    std::cout << "Press" << std::endl;
+}
 void ofApp::mouseReleased(int x, int y, int button) { }
 void ofApp::windowResized(int w, int h) { }
 void ofApp::gotMessage(ofMessage msg) { }

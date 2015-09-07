@@ -8,7 +8,7 @@ RadarContainer::RadarContainer() {
   w = 240;
   h = 21*GRID_SIZE;
   abs_p = ofPoint(1515, 195);
-  
+
   radar1 = Radar();
   radar1.x = abs_p.x;
   radar1.y = abs_p.y+1*GRID_SIZE;
@@ -17,7 +17,7 @@ RadarContainer::RadarContainer() {
   radar1.cam.setDistance(375);
   radar1.absolute_center = ofPoint(radar1.x+w/2, radar1.y+(12*GRID_SIZE)/2);
   radar1.set_theta_rate(1/230.0);
-  
+
   radar2 = Radar();
   radar2.x = abs_p.x;
   radar2.y = abs_p.y+14*GRID_SIZE;
@@ -26,7 +26,7 @@ RadarContainer::RadarContainer() {
   radar2.cam.setDistance(425);
   radar2.absolute_center = ofPoint(radar2.x+w/2/2, radar2.y+(6*GRID_SIZE)/2);
   radar2.set_theta_rate(1/150.0);
-  
+
   radar3 = Radar();
   radar3.x = abs_p.x+w/2;
   radar3.y = abs_p.y+14*GRID_SIZE;
@@ -35,10 +35,10 @@ RadarContainer::RadarContainer() {
   radar3.cam.setDistance(425);
   radar3.absolute_center = ofPoint(radar3.x+w/2/2, radar3.y+(6*GRID_SIZE)/2);
   radar3.set_theta_rate(1/130.0);
-  
+
   tline1 = newTickLine(0, 0, w, 40, 0, COLOR_LINE);
   tline2 = newTickLine(0, h, w, 40, 0, COLOR_LINE);
-  
+
   // Top Left
   texts.push_back(newText("MEMORY", 5,
                           5, 7,
@@ -79,17 +79,26 @@ RadarContainer::RadarContainer() {
                           10, 0,
                           COLOR_55,
                           false));
-  
+
   // Animation settings
   events.clear();
   newEvent(0, 300, 0, 1); // intro
   newEvent(0, -1, 1, 1); // main
   currentEvent = events[0];
-  
+
   updateDependencyEvents();
   updateDependencyDelays(getDelay());
 }
 
+void RadarContainer::setPosSubviews(float x_, float y_) {
+    //we use this funcion for containers that need global positioning
+    radar1.x = x_;
+    radar1.y = y_+30+1*GRID_SIZE;
+    radar2.x = x_;
+    radar2.y = y_+30+14*GRID_SIZE;
+    radar3.x = x_+w/2;
+    radar3.y = y_+30+14*GRID_SIZE;
+}
 void RadarContainer::setPos(float x_, float y_) {
   x = x_;
   y = y_;
@@ -104,10 +113,10 @@ void RadarContainer::draw() {
     // Intro
     tline1.draw();
     tline2.draw();
-    
+
     for (int i = 0; i < texts.size(); i++)
       texts[i].draw();
-    
+
     int radar_delay = 75;
     int radar_dur = 50;
 
@@ -135,7 +144,7 @@ void RadarContainer::draw() {
       radar2.draw();
       radar3.draw();
     }
-    
+
     if (currentEvent.id == 0) {
       boxIntro();
     } else {
@@ -151,7 +160,7 @@ void RadarContainer::draw() {
 void RadarContainer::updateDependencyDelays(int delay_) {
   tline1.setDelay(delay_);
   tline2.setDelay(delay_-10);
-  
+
   int textDelay = -105;
   int textDelays[7] = {0,-5,-10,-15,-15,0,-5};
   for (int i = 0; i < texts.size(); i++)
@@ -161,7 +170,7 @@ void RadarContainer::updateDependencyDelays(int delay_) {
 void RadarContainer::updateDependencyEvents() {
   tline1.setEvents(events);
   tline2.setEvents(events);
-  
+
   for (int i = 0; i < texts.size(); i++)
     texts[i].setEvents(events);
 }
@@ -170,7 +179,7 @@ void RadarContainer::boxIntro() {
   int boxdelay = -20;
   int boxdurw = 40;
   int boxdurh = 40;
-  
+
   // Boxes
   float boxh = 6*GRID_SIZE;
   float boxy = 0.5+h-7*GRID_SIZE;

@@ -1,9 +1,9 @@
 /*
- 
+
  right.h
- 
+
  Right panel of UI utils.
- 
+
  */
 
 #pragma once
@@ -18,14 +18,15 @@ class Right : public Animated {
 public:
   Right();
   void draw();
-  
+
   float x;
   float y;
   float w;
   float h;
-  
+
   void setPos(float x_, float y_);
-  
+  void setPosSubviews(float x_, float y_);
+
   void updateDependencyEvents();
   void updateDependencyDelays(int delay_);
 private:
@@ -34,7 +35,7 @@ private:
   RadarContainer radar;
   SpikeGraph sg;
   Header footer;
-  
+
   AnimatedTickLine tline1;
   AnimatedTickLine tline2;
 };

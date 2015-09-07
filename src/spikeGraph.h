@@ -18,30 +18,32 @@ public:
   void draw();
   void drawSpike(spike s);
   void newSpike(float height, float dir, float x);
+  void setPosSubviews(float x_, float y_);
   void setPos(float x_, float y_);
-  
+
   float x,y,w,h;
   float spikeWidth;
-  
+  float absx; //absolute x position
+
   void updateDependencyEvents();
   void updateDependencyDelays(int delay_);
 private:
   int scounter;
   float speed;
-  
+
   // Assumed to match in x positions
   vector<spike> spikesDown;
   vector<spike> spikesUp;
-  
+
   void updateSpikePositions();
   bool needsNewSpike();
   void removeOldSpikes();
-  
+
   ofShader maskShader;
-  
+
   AnimatedTickLine tline1;
   AnimatedTickLine tline2;
   vector<AnimatedText> texts;
-  
+
   void boxIntro();
 };

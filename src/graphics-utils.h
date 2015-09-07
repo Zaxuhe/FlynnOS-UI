@@ -26,7 +26,7 @@
 #define COLOR_175   ofColor::fromHex(0x9baaa0)
 #define COLOR_LINE COLOR_55
 
-#define MAIN_FONT_LINUX ""
+#define MAIN_FONT_LINUX "UnitedSansCond-Medium.otf"
 #define MAIN_FONT_MAC ""
 #define MAIN_FONT MAIN_FONT_LINUX
 
