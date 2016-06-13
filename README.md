@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/Zaxuhe/FlynnOS-UI.png?label=ready&title=Ready)](https://waffle.io/Zaxuhe/FlynnOS-UI)
 DEX UI
 ===
 
